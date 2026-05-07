@@ -1,4 +1,3 @@
-Assignment 1
 Q1. Create and Initialize Git Repository
 ●	Create a new repository named git_lab on your local system.
 ●	Initialize it using Git.
