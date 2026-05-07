@@ -1,0 +1,431 @@
+Assignment 1
+Q1. Create and Initialize Git Repository
+●	Create a new repository named git_lab on your local system.
+●	Initialize it using Git.
+●	Create a file info.txt and add your name and date.
+●	Check the repository status.
+●	Add the file to staging and commit with message "Initial commit"
+Ans
+●	 cd ~/
+●	sudo apt install git
+●	mkdir git_lab
+●	 cd  git_lab
+●	 git init
+●	cat > info.txt
+●	ls
+●	git status
+●	git add .
+●	git status
+●	git config --global user.name 'harshitatrimukhe'
+●	git config --global user.email 'harshitatrimukhe07@gmail.com'
+●	git commit -m "initial commit"
+●	git status
+
+Q2. Connect to GitHub and Push Code
+●	Create a repository named git_lab_remote on GitHub.
+●	Go to your github account create new repository
+●	Link your local repository ( git_lab ) to the remote repository.
+●	git remote add origin https://github.com/harshitatrimukhe/Git_lab_remote.git
+●	Push your committed file to the remote repository.
+●	git branch -M main
+●	git push -u origin main
+●	git config --global credential.helper store (to store personal access token permanently)
+●	Verify the file is uploaded on GitHub.
+●	Check on you newly created repo
+
+Q3. Clone Repository and Make Changes
+●	Clone the repository git_lab_remote to a new directory.
+●	mkdir new_git_clone
+●	cd new_git_clone
+●	git clone https://github.com/harshitatrimukhe/Git_lab_remote.git
+●	cd Git_lab_remote/
+●	Create a new file data.txt and add some sample content.
+●	Add and commit the file with message "Added data file" .
+●	Push the changes back to GitHub.
+●	cat > data.txt
+●	git status
+●	git add .
+●	git status
+●	git commit -m "add data.txt file"
+●	git push -u origin main
+
+Q4. Branching and Merging
+●	Create a new branch named feature .
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git checkout -b feature
+●	Switch to the feature branch.
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git checkout feature
+●	Modify info.txt (add new line: “Feature branch update”).
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ nano info.txt
+●	Commit the changes.
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git add .
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git commit -m "info.txt modified"
+●	Switch back to main branch.
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git checkout main
+●	Merge the feature branch into main .
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git branch
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git merge feature
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git push origin main
+●	Delete the feature branch after merge.
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git branch -d feature
+●	harshita@harshita-virtual-machine:~/new_git_clone/Git_lab_remote$ git branch
+
+Assignment 2
+Q1. Pull and Run Image
+1. Pull the nginx image from Docker Hub.
+harshita@harshita-virtual-machine:~$ sudo su - 
+root@harshita-virtual-machine:~# docker pull nginx
+2. Run a container from the image.
+root@harshita-virtual-machine:~# docker run --name my-nginx -dit nginx
+3. Check running containers.
+root@harshita-virtual-machine:~# docker ps
+4. Stop the container.
+root@harshita-virtual-machine:~# docker stop my-nginx 
+root@harshita-virtual-machine:~# docker ps -a
+5. Remove the container.
+root@harshita-virtual-machine:~# docker rm my-nginx 
+root@harshita-virtual-machine:~# docker ps -a
+
+Q2. Image Commands Practice
+1. Pull alpine image.
+Docker pull alpine
+2. List all images available locally.
+Docker imgaes
+3. Inspect the alpine image.
+root@harshita-virtual-machine:~# docker inspect alpine
+4. Remove the alpine image.
+root@harshita-virtual-machine:~# docker rmi alpine
+root@harshita-virtual-machine:~# docker images
+5. What happens if you try to remove a running container’s image? Explain.
+root@harshita-virtual-machine:~# docker ps -a (list all stop and running containers)
+root@harshita-virtual-machine:~# docker stop bd (stop the container alpine image used)
+root@harshita-virtual-machine:~# docker rm bd (remove the container)
+root@harshita-virtual-machine:~# docker rmi alpine (remove image)
+
+Q3 Container Commands
+1. Run a container using ubuntu image in interactive mode.
+root@harshita-virtual-machine:~# docker run -it ubuntu
+2. Execute basic Linux command inside container ( ls , pwd ).
+3. Exit the container.
+4. List all containers (including stopped).
+root@harshita-virtual-machine:~# docker ps -a
+5. Restart the stopped container.
+root@harshita-virtual-machine:~# docker run ubuntu
+root@harshita-virtual-machine:~# docker ps -a
+
+Q4 Naming and Renaming
+1. Run an nginx container with name web_server .
+root@harshita-virtual-machine:~# docker run -d --name web_server nginx
+2. Verify the container name.
+root@harshita-virtual-machine:~# docker ps
+3. Stop the container.
+root@harshita-virtual-machine:~# docker stop web_server
+4. Rename the container to my_server .
+root@harshita-virtual-machine:~# docker rename web_server my_server
+root@harshita-virtual-machine:~# docker ps
+5. Remove the container.
+root@harshita-virtual-machine:~# docker rm my_server
+root@harshita-virtual-machine:~# docker ps
+
+Q5: Tagging Docker Image
+1. Pull nginx image.
+root@harshita-virtual-machine:~# docker pull nginx
+root@harshita-virtual-machine:~# docker images
+2. Tag it as mynginx:v1 .
+root@harshita-virtual-machine:~# docker tag nginx:latest mynginx:v1
+3. Tag it again as mynginx:latest .
+root@harshita-virtual-machine:~# docker tag nginx:latest mynginx:latest
+4. List images and verify tags.
+root@harshita-virtual-machine:~# docker images
+5. Remove one tag and observe result.
+root@harshita-virtual-machine:~# docker rmi mynginx:v1 
+root@harshita-virtual-machine:~# docker images
+
+Q6  Push Image to Docker Hub
+1. Login to Docker Hub using docker login .
+root@harshita-virtual-machine:~# docker login
+2. Tag your image as:
+<your_username>/mynginx:v1
+root@harshita-virtual-machine:~# docker tag nginx harshitatrimukhe/mynginx:v1
+3. Push the image to Docker Hub.
+root@harshita-virtual-machine:~# docker push harshitatrimukhe/mynginx:v1
+root@harshita-virtual-machine:~# docker images
+4. Logout from Docker.
+root@harshita-virtual-machine:~# logout
+5. Verify image on Docker Hub website.
+
+Q7: Basic Networking and Port Mapping
+1. Run an nginx container with port mapping:
+8080:80
+root@harshita-virtual-machine:~# docker pull nginx
+root@harshita-virtual-machine:~# docker run -d -p 8080:80 nginx
+2. Open browser and access localhost:8080 .
+3. List Docker networks.
+root@harshita-virtual-machine:~# docker network ls
+4. Inspect default bridge network.
+root@harshita-virtual-machine:~# docker network inspect bridge
+5. Explain what port mapping does in Docker.
+
+Assignment 3
+Q1. Docker Volume Persistence
+●	Create a Docker volume named data_vol .
+●	root@harshita-virtual-machine:~# docker volume create data_vol
+●	Run a container using this volume mounted at /data .
+●	root@harshita-virtual-machine:~# docker run -d --name my-mysql1 -e MYSQL_ROOT_PASSWORD=ROOT123 -v ./data:/var/lib/mysql -p 3306:3306 mysql:8
+●	root@harshita-virtual-machine:~# docker rm -f my-mysq1l (to remove pre)
+●	Create a file inside /data , remove the container, and start a new container using the same volume.
+●	root@harshita-virtual-machine:~# cd data/
+●	root@harshita-virtual-machine:~/data# cat > data.txt
+●	root@harshita-virtual-machine:~# docker run -d --name my-mysql2 -e MYSQL_ROOT_PASSWORD=ROOT123 -v ./data:/var/lib/mysql -p 3306:3306 mysql:8
+●	root@harshita-virtual-machine:~# cd data/
+●	Verify whether the file still exists.
+●	ls
+
+Q2. Dockerfile – Python Application
+●	Create a simple Python program that prints a message.
+●	Write a Dockerfile to build an image and run the Python script inside a container.
+●	Nano hello.py
+●	Nano Dockerfile
+ FROM	python:3.9
+WORKDIR	/app
+COPY	hello.py /app
+CMD	["python","hello.py"]
+●	docker build -t my-hello .
+●	docker run my-hello
+
+Q3. Dockerfile – Java Application
+●	Write a simple Java program that prints a message.
+●	Create a Dockerfile to compile and run the Java program inside a container.
+Nano HelloWorld.java
+public class HelloWorld {
+        public static void main(String[] args) {
+                System.out.println("Hello World");
+        } 
+}
+Nano Dockerfile
+FROM    eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY    HelloWorld.java .
+RUN     javac HelloWorld.java
+CMD     ["java", "HelloWorld"]
+root@harshita-virtual-machine:~/hello-java# docker build -t my-java .
+root@harshita-virtual-machine:~/hello-java# docker run my-java 
+
+Q4. Docker Volume with MySQL
+●	Run a MySQL container using a Docker volume for data storage.
+●	Create a database and table, insert some records, then restart the container.
+●	Verify whether the data persists after restart.
+●	root@harshita-virtual-machine:~# docker run -d --name my-mysql -e MYSQL_ROOT_PASSWORD=root123 -v mysql-data:/var/lib/mysql -p 3306:3306 mysql:8
+●	root@harshita-virtual-machine:~# docker exec -it my-mysql mysql -uroot -p
+●	mysql> create database cdac;
+●	mysql> use cdac;
+●	mysql> create table student(id int primary key, name varchar(30));
+●	mysql> insert into student(id, name) values(1, "harshita");
+●	exit
+●	root@harshita-virtual-machine:~# docker restart my-mysql
+●	root@harshita-virtual-machine:~# docker exec -it my-mysql mysql -uroot -p
+●	And then checks the data in sql
+
+Q5. Dockerfile – Nginx Web Server
+●	Create a custom HTML page.
+●	Write a Dockerfile to serve this page using an Nginx container.
+●	Run the container and verify the output in a browser.
+●	mkdir webpages
+●	  cd webpages
+●	  echo "hello ngix default browser" > index.html
+●	  nano Dockerfile
+FROM	nginx:alpine
+COPY	index.html /usr/share/nginx/html/
+●	 docker build -t nginx-image .
+●	 docker run nginx-image
+●	root@harshita-virtual-machine:~/webpages# docker run -d --name my-web-server -p 8080:80 nginx-image
+●	33fe659fe3151bb9b2531ce0ca467681087790a62a9dbb056ecdfd5b9971300c
+●	Acces on browser localhost:8080
+
+Q6. Bind Mount vs Volume
+●	Create a directory on the host system and store a file in it.
+●	Run a container using a bind mount to access this directory.
+●	Compare this with using a Docker volume and explain the difference.
+mkdir bind-mount
+cat > hello.txt
+docker run --name hello-container -v bind-mount:/var/lib alpine
+
+Q7. Dockerfile – Shell Script Execution
+Write a shell script that prints a message and system date.
+Create a Dockerfile to execute this script inside a container.
+Nano Dockerfile
+FROM    ubuntu:latest
+WORKDIR /app
+COPY    systemdate.sh .
+CMD     ["./systemdate.sh"]
+Nano systemdate.sh
+#!/bin/bash
+echo "this is the system information"
+Date
+root@harshita-virtual-machine:~# chmod 777 systemdate.sh 
+root@harshita-virtual-machine:~# docker build -t systemdate .
+root@harshita-virtual-machine:~# docker run systemdate
+
+Q8. Shared Volume Between Containers
+Create a Docker volume and use it with two different containers.
+Write data from one container and access the same data from another
+container.
+Verify that both containers can share the same data.
+●	mkdir shared-data-dir
+●	cd shared-data-dir
+●	docker run --name container-A -v shared-vol:/app alpine sh -c "echo 'Shared data from Container A' > /app/data.txt"
+●	docker run --name container-B -v shared-vol:/mnt/common alpine cat /mnt/common/data.txt
+
+Assignment 4
+Q1. Docker Compose: Nginx Static Website
+Question
+Create a Docker Compose setup to run an Nginx container that serves a
+custom HTML page.
+Requirements
+1. Create a folder named website
+2. Create a file index.html with content:
+Hello from Docker Compose
+3. Use Docker Compose to:
+Run an Nginx container
+Map port 8080 to 80
+Mount website folder to /usr/share/nginx/html
+4. Open browser and verify output
+
+
+
+
+
+
+
+
+
+
+
+Q2. Docker Compose: Python Script Container
+Question
+Run a simple Python script using Docker Compose.
+Requirements
+1. Create a file app.py: print("Hello from Python Container")
+2. Create a Dockerfile to run this script
+3. Use Docker Compose to run this container
+4. Container should execute script and exit
+
+
+
+
+
+Q3. Docker Compose: MySQL with Volume
+Question
+Create a MySQL container using Docker Compose with persistent storage.
+Requirements
+1. Use MySQL image
+2. Set:
+root password
+database name
+3. Create a named volume
+4. Start container and:
+Enter MySQL using docker exec
+Create table test
+5. Restart container and verify data still exists
+
+
+
+
+
+Q4. Docker Compose: One Volume with 3 Nginx
+Containers
+Question
+Create a Docker Compose setup using three Nginx containers that share a
+single volume but display different HTML content.
+Requirements
+1. Create one named volume:
+shared-data
+2. Create three Nginx containers:
+nginx1
+Nginx2
+nginx3
+3. Attach the same volume to all containers at:
+/usr/share/nginx/html
+4. Each container should display different HTML content:
+nginx1 → Hello from Container 1
+nginx2 → Hello from Container 2
+nginx3 → Hello from Container 3
+5. Expose each container on different ports:
+nginx1 → 8081
+nginx2 → 8082
+nginx3 → 8083
+6. Ensure all three containers run simultaneously using Docker Compose.
+7. Open browser and verify:
+http://localhost:8081
+http://localhost:8082
+http://localhost:8083
+Each port should show different content.
+
+
+Assignment 5
+Q1. Docker Swarm: Nginx Service
+Deploy an Nginx service in Docker Swarm.
+Requirements:
+1. Initialize Docker Swarm.
+2. Create a service:
+Service name: nginx-service
+Image: nginx
+Replicas: 2
+3. Expose container port 80 on host port 8080 .
+4. Verify the service using:
+docker service ls
+docker service ps nginx-service
+5. Access Nginx from the browser.
+
+Q2. Docker Swarm: Python Worker Service
+Deploy a Python script as a Docker Swarm service.
+Requirements:
+1. Create app.py that prints:
+Running in Swarm...
+every 5 seconds.
+1. Create a Dockerfile.
+2. Build a Docker image.
+3. Deploy the service:
+Service name: python-service
+Replicas: 3
+4. Check logs from different running containers.
+5. Verify task distribution using:
+docker service ps python-service
+
+
+
+Q3. Docker Swarm: Scaling Service
+Scale an existing Docker Swarm service.
+Requirements:
+1. Deploy an Nginx service with 2 replicas.
+2. Scale the service to 5 replicas.
+3. Verify replicas using:
+docker service ls
+docker service ps nginx-service
+1. Scale the service back to 1 replica.
+2. Observe what happens to containers.
+
+
+Q4. Docker Swarm: Rolling Update
+Perform a rolling update in Docker Swarm.
+Requirements:
+1. Deploy a service using image nginx:1.25 .
+2. Update the service to use image nginx:latest .
+3. Use rolling update options:
+Update one container at a time
+Delay between updates: 10 seconds
+4. Verify update status.
+5. Roll back the service if needed.
+
+
+
+
+Q5. Docker Swarm: Remove Service and Leave Swarm
+Clean up Docker Swarm resources.
+Requirements:
+1. List all running services.
+2. Remove nginx-service .
+3. Remove python-service .
+4. Verify services are deleted.
+5. Leave Docker Swarm mode.
+
+
