@@ -1,0 +1,307 @@
+Jenkins
+--------------------
+Demo Question
+```````````````
+git init
+git add .
+git commit -m "Initial Commit"
+git branch -M main
+git remote add origin https://github.com/...........
+git push -u origin main
+git status
+
+
+python3 app.py
+nano Jenkinsfile
+	pipeline {
+		agent any
+		
+		stages {
+			stage('Checkout') {
+				steps {
+					git branch: 'main', url:'.....'
+				}
+			}
+			stage('run python code') {
+				steps {
+					sh 'pyhton3 app.py'
+				}
+			}
+		}
+		
+		post {
+			success {
+				echo 'Python code build successfully.'
+			}		
+			failure {
+				echo 'Python code build failed.'
+			}
+		}
+	}
+
+push to GitHub
+
+On brower:-
+Go to config -> Pipeline-> Select 'Pipeline script from SCM' -> Select 'Git' in SCM -> Add repo url -> specifiy branch -> Apply
+
+
+Q1
+````````
+nano HelloWorld.java
+	public class HelloWorld {
+		public static void main(String[] args) {
+			System.out.println("Hello Welcome to Jenkins");
+		}
+	}
+
+nano Jenkinsfile
+	pipeline {
+		agent any
+		
+		stages {
+			stage('Checkout') {
+				steps {
+					git branch: 'main', url:'.....'
+				}
+			}
+			stage('run java code') {
+				steps {
+					sh 'javac HelloWorld.java'
+					sh 'java HelloWorld'
+				}
+			}
+		}
+		
+		post {
+			success {
+				echo 'Java code build successfully.'
+			}		
+			failure {
+				echo 'Java code build failed.'
+			}
+		}
+	}
+
+git init
+git add .
+git status
+git remote add origin https://github.com/.......
+git add .
+git commit -m "Added Jenkinsfile"
+git branch -M main
+git push -u origin main
+
+
+Q2
+`````````
+nano Dockerfile
+	FROM	eclipse-temurin:17-jdk-alpine
+	WORKDIR	/app
+	COPY	HelloWorld.java /app
+	RUN	javac HelloWorld.java
+	CMD	["java", "HelloWorld"]
+
+
+nano Jenkinsfile
+	pipeline {
+		agent any
+
+		environment {
+			DOCKER_IMAGE = 'hello-world-java'
+		
+		stages {
+			stage('Checkout') {
+				steps {
+					git branch: 'main', url:'.....'
+				}
+			}
+			stage('Docker Build') {
+				steps {
+					script{
+						if (fileExists('Dockerfile')) {
+							sh "docker build -t ${env.DOCKER_IMAGE} ."
+						} else {
+							error "Docker file not found"	
+						}
+					}
+				}	
+			}
+		}
+		
+		post {
+			success {
+				echo 'Docker image build successfully.'
+			}		
+			failure {
+				echo 'Docker image build failed.'
+			}
+		}
+	}
+
+
+git add .
+git commit -m "Added docker file"
+git push -u origin main
+
+
+Q3
+`````````
+
+nano Jenkinsfile
+	pipeline {
+		agent any
+
+		environment {
+			DOCKER_IMAGE = 'hello-world-java'
+			IMAGE_TAG = 'latest'
+		
+		stages {
+			stage('Checkout') {
+				steps {
+					git branch: 'main', url:'.....'
+				}
+			}
+			stage('Docker Build') {
+				steps {
+					script{
+						if (fileExists('Dockerfile')) {
+							sh "docker build -t ${env.DOCKER_IMAGE} ."
+						} else {
+							error "Docker file not found"	
+						}
+					}
+				}	
+			}
+			stage('push to dockerhub') {
+				steps {
+					script{
+						withCredentials([usernamePassword(credentialsId: 'my-docker-hub-credentials-id',
+								usernameVariable: 'DOCKER_USERNAME',
+								passwordVariable: 'DOCKER_PASSWORD')]) {
+						
+						sh """
+						echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME"
+						echo "Login Succesfull on Docker Hub"
+						docker push "smruti05/${DOCKER_IMAGE}:${IMAGE_TAG}"
+						"""
+						}
+					}	
+				}
+				
+			}
+		}
+		
+		post {
+			success {
+				echo 'Docker image build successfully.'
+			}		
+			failure {
+				echo 'Docker image build failed.'
+			}
+		}
+	}
+
+
+Q4
+```````
+
+nano Jenkinsfile
+	pipeline {
+		agent any
+
+		environment {
+			DOCKER_IMAGE = 'hello-world-java'
+			IMAGE_TAG = 'latest'
+		
+		stages {
+			stage('Checkout') {
+				steps {
+					git branch: 'main', url:'.....'
+				}
+			}
+			stage('Docker Build') {
+				steps {
+					script{
+						if (fileExists('Dockerfile')) {
+							sh "docker build -t ${env.DOCKER_IMAGE} ."
+						} else {
+							error "Docker file not found"	
+						}
+					}
+				}	
+			}
+			stage('push to dockerhub') {
+				steps {
+					script{
+						withCredentials([usernamePassword(credentialsId: 'my-docker-hub-credentials-id',
+								usernameVariable: 'DOCKER_USERNAME',
+								passwordVariable: 'DOCKER_PASSWORD')]) {
+						
+						sh """
+						echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME"
+						echo "Login Succesfull on Docker Hub"
+						docker push "smruti05/${DOCKER_IMAGE}:${IMAGE_TAG}"
+						"""
+						}
+					}	
+				}
+				
+			}
+			stage('Kubernetes deployment') {
+				steps {
+					script{
+						sh "kubectl apply -f deployment.yml"
+						sh "kubectl apply -f sevice.yml"	
+					}
+				}	
+			}
+		}
+		
+		post {
+			success {
+				echo 'Docker image build successfully.'
+			}		
+			failure {
+				echo 'Docker image build failed.'
+			}
+		}
+	}
+
+nano Deployment.yml
+
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata: 
+	  name: java
+	  labels:
+	    app: java
+	spec:
+	  selector:
+	    matchLabels:
+	      app: java
+	  template:
+	    metadata:
+	      labels:
+		app:java
+	    spec:
+	      containers:
+		- name:java
+		  image: hello-world-java
+		  ports:
+		    - containerPorts: 8989
+
+nano Service.yml
+
+	apiVersion: v1
+	kind: Service
+	metadata: 
+	  name: java-service
+	
+	spec:
+	  type: NodePort
+	  selector:
+	     app: java
+	  ports:
+	     - port: 8989
+	       targetPort: 8989	
+
